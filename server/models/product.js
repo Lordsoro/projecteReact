@@ -6,8 +6,7 @@ let productSchema = new schema({
     name: {
         type: String,
         required: false,
-        minlength: 1,
-        trim: true
+
     },
     description: {
         type: String,

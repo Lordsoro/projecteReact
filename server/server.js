@@ -44,11 +44,12 @@ mongoose
 // set up routes
 const userRoute = require('./routes/user')
 const productRoute = require('./routes/products')
+const pedidoRoute = require('./routes/pedido')
 
 //cargar rutas
 app.use('/api', userRoute);
 app.use('/api', productRoute);
-
+app.use('/api', pedidoRoute)
 
 module.exports = app;
 

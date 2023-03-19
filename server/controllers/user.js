@@ -3,7 +3,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
 async function register(req, res) {
-    const { name, password, email, country } = req.body;
+    const { name, password, email, country = 'spain' } = req.body;
     try {
         if (!name) {
             throw { msg: 'El nombre es obligatorio' };
@@ -43,7 +43,7 @@ async function login(req, res) {
         if (!passwordSucces) throw { msg: "Error en contraseña" }
 
         req.session.currentUser = email;
-        res.json({ success: true, user: user.name })
+        res.json({ success: true, user: user.name, id: user._id })
 
     } catch (error) {
 
