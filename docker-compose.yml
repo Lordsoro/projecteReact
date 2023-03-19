@@ -19,6 +19,6 @@ services:
       DB_USERNAME: laravel
       DB_PASSWORD: secret
   react:
-    build: ./client
+    build: ./server
     ports:
       - 3000:3000
