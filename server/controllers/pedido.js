@@ -2,19 +2,19 @@ const { Pedido } = require('../models/pedido');
 const Product = require('../models/product');
 
 async function register(req, res) {
-    const { user_id, products, quantity, total, size = 's' } = req.body;
+    const { user, products, quantity, total, size = 's' } = req.body;
     try {
         const productDocs = await Product.find({ _id: { $in: products } })
         const newPedido = new Pedido({
-            user_id,
+            user,
             products: productDocs,
             quantity,
             size,
             total
-
         });
 
         await newPedido.save();
+        //res.redirect('/payment');
         res.json({ success: true, newPedido });
     } catch (error) {
         console.error(error);
