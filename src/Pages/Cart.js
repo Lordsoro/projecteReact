@@ -6,7 +6,7 @@ import swal from 'sweetalert';
 export default function CartPage() {
     const { cart, setCart, setCartLength } = useContext(CartContext);
     const navigate = useNavigate();
-    //const user = JSON.parse(localStorage.getItem('user-info'))
+    const user = JSON.parse(localStorage.getItem('user-info'))
 
 
     async function Confirmar() {
@@ -33,7 +33,7 @@ export default function CartPage() {
                 });
                 if (!response.ok) {
                     const errorResponse = await response.json();
-                    console.log(user.id + "total" + total)
+                    console.log(user.id)
                     throw new Error(errorResponse.message || 'Error al registrar pedido');
                 }
                 console.log('Response:', await response.json());
