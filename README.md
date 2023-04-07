@@ -1,5 +1,8 @@
 INTRUCCIONS ARRACANR L'APLICACIÓ.
 
+-Clonar el projecte, executar el commandament: npm install en la carpeta arrel.
+-Navegar a la carpeta server i executar el mateix comandament
+
 -Per arrancar el frontend, en la carpeta principar posar el codi: - npm start.
 
 -Per arrancar el backend:
