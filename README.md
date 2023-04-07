@@ -8,3 +8,7 @@ INTRUCCIONS ARRACANR L'APLICACIÓ.
 -Per arrancar el backend:
       navegar a la carpeta server: - cd server.
       correr el comandament: - nodemon server.js
+      
+-Hi ha un usuari demo per usar l'aplicació. en login cal posar:
+      email: demo@demo.com
+      password: 123
