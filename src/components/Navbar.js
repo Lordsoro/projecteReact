@@ -45,7 +45,7 @@ export default function Navbar() {
                         <div className="navbar-nav ms-auto">
                             {user ? (
                                 <>
-                                    <li className='userloged'>¡Bienvenido, {user.user}!</li>
+                                    <li className='userloged'>¡Bienvenido, {user.name}!</li>
                                     <li className='userloged'><Link to="/cart">🛒<span>{cartLength}</span></Link></li>
                                     <li className='userloged' onClick={Logout}><Link to="/">Logout</Link></li>
                                 </>
