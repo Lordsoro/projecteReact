@@ -9,9 +9,9 @@ export default function CartPage() {
     const user = JSON.parse(localStorage.getItem('user-info'))
 
 
-    async function Confirmar() {
+   async function Confirmar() {
         try {
-            const user = JSON.parse(localStorage.getItem('user-info'));
+            const user = JSON.parse(localStorage.getItem('user-info'))
             if (!user) {
                 throw new Error('No se ha encontrado información de usuario.');
             }
@@ -33,7 +33,6 @@ export default function CartPage() {
                 });
                 if (!response.ok) {
                     const errorResponse = await response.json();
-                    console.log(user.id)
                     throw new Error(errorResponse.message || 'Error al registrar pedido');
                 }
                 console.log('Response:', await response.json());
@@ -46,6 +45,7 @@ export default function CartPage() {
             swal('Error', 'Algo ha fallado en el registrod el pedido');
         }
     }
+
 
     useEffect(() => {
         setCartLength(cart.length)
