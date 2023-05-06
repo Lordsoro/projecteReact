@@ -24,10 +24,12 @@ async function register(req, res) {
             country,
         });
         await newUser.save();
-        res.json({ success: true });
+        const user = { id: newUser._id, name, email, country };
+        res.json({ success: true, user });
     } catch (error) {
         res.status(500).send(error);
     }
+
 }
 
 async function login(req, res) {
