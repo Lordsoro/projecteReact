@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 async function profile(req, res) {
     try {
-        const userId = req.session.currentUser;
+        const userId = req.params.userId;
         console.log("profile: ")
         console.log(userId)
         const user = await User.findById(userId);
@@ -19,6 +19,18 @@ async function profile(req, res) {
     }
 }
 
+async function deleteAccount(req, res) {
+    const userId = req.params.userId;
+
+    try {
+        await User.deleteOne({ _id: userId });
+
+        res.json({ success: true, message: 'Cuenta eliminada exitosamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error al eliminar la cuenta' });
+    }
+}
 
 async function register(req, res) {
     const { name, password, email, country = 'spain' } = req.body;
@@ -50,8 +62,10 @@ async function register(req, res) {
 
 }
 
+
 async function login(req, res) {
-    const { email, password } = req.body;
+    console.log(req.body)
+    const { name, email, password } = req.body;
     try {
         let user;
         let isDemoUser = false;
@@ -64,16 +78,23 @@ async function login(req, res) {
             const passwordSucces = await bcrypt.compare(password, user.password);
             if (!passwordSucces) throw { msg: 'Error en contraseña' };
         }
-        req.session.currentUser = email;
+        user.name = name;
+        await user.save();
         res.json({
             success: true,
-            user: isDemoUser ? 'Demo User' : user.name,
-            id: isDemoUser ? user._id : user.id,
+            user: isDemoUser ? 'Demo User' : user,
+            id: user.id,
+            name: user.name
         });
+        req.session.currentUser = user;
+        console.log(req.session.currentUser);
     } catch (error) {
         res.json({ success: false, error: 'Usuario o contraseña incorrectos' });
     }
 }
+
+
+
 
 const demoUser = {
     name: 'Demo User',
@@ -97,9 +118,12 @@ async function init() {
     }
 }
 
+
 init();
 
 module.exports = {
     register,
     login,
+    profile,
+    deleteAccount
 };
