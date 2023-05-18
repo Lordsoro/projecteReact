@@ -8,34 +8,32 @@ export default function Signup() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [country, setCountry] = useState('');
+    const [city, setcity] = useState('');
+    const [adress, setAdress] = useState('');
     const navigate = useNavigate();
 
 
     function handleLogin(name, value) {
-
         setName(value)
-
     }
     function handleEmail(name, value) {
-
         setEmail(value)
-
     }
-    function handleCountry(value) {
+    function handleAdress(value) {
         console.log(value)
-        setCountry(value)
+        setcity(value)
     }
-
+    function handleAdress2(value) {
+        console.log(value)
+        setAdress(value)
+    }
     function handlePass(name, value) {
-
         setPassword(value)
-
     }
 
     async function handleSubmit(event) {
         event.preventDefault();
-        console.log(country);
+        console.log(city);
         const baseUrl = 'http://localhost:8000/api/register';
         try {
             const response = await fetch(baseUrl, {
@@ -44,7 +42,8 @@ export default function Signup() {
                     name: name,
                     email: email,
                     password: password,
-                    country: country
+                    city: city,
+                    adress: adress
                 }),
                 headers: {
                     'Accept': 'application/json',
@@ -108,16 +107,26 @@ export default function Signup() {
                         handleChange={handleEmail} />
                 </div>
                 <div>
-                    <select id="country" name="country" defaultValue={"spain"} onChange={(e) => handleCountry(e.target.value)}>
-
-                        <option value="spain" >España</option>
-                        <option value="uk">Reino Unido</option>
-                        <option value="italia">Italia</option>
-                        <option value="francia">Francia</option>
-
-                    </select>
-
+                    <Input
+                        attribute={{
+                            id: 'city',
+                            name: 'city',
+                            type: 'text',
+                            placeholder: 'ciudad'
+                        }}
+                        handleChange={handleAdress} />
                 </div>
+                <div>
+                    <Input
+                        attribute={{
+                            id: 'adress',
+                            name: 'adress',
+                            type: 'adress',
+                            placeholder: 'Calle Nº '
+                        }}
+                        handleChange={handleAdress2} />
+                </div>
+
 
                 <button onClick={handleSubmit}>Registrarse</button>
 
