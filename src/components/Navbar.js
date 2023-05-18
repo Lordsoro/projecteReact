@@ -8,6 +8,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 export default function Navbar() {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user-info'))
+
     const { cartLength } = useContext(CartContext);
     const [collapse, setCollapse] = useState(true);
 
@@ -39,14 +40,13 @@ export default function Navbar() {
                             <li onClick={handleMenuClick}><Link to='/invierno'>Outfits Invierno</Link></li>
                             <li onClick={handleMenuClick}><Link to="/verano">Outfits Verano</Link></li>
                             <li onClick={handleMenuClick}><Link to="/primavera">Outfits EntreTiempo</Link></li>
-                            <li onClick={handleMenuClick}><a href="/accesorios">Accesorios</a></li>
-
                         </div>
                         <div className="navbar-nav ms-auto">
                             {user ? (
                                 <>
                                     <li className='userloged'>¡Bienvenido, {user.name}!</li>
                                     <li className='userloged'><Link to="/cart">🛒<span>{cartLength}</span></Link></li>
+                                    <li onClick={handleMenuClick} ><a href="/profile" >Perfil 👤</a></li>
                                     <li className='userloged' onClick={Logout}><Link to="/">Logout</Link></li>
                                 </>
                             ) : (
@@ -62,6 +62,5 @@ export default function Navbar() {
                 </div>
             </nav>
         </div>
-
     );
 }
