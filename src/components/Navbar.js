@@ -39,7 +39,6 @@ export default function Navbar() {
                             <li id='logo' onClick={handleMenuClick}><Link to="/">Home</Link></li>
                             <li onClick={handleMenuClick}><Link to='/invierno'>Outfits Invierno</Link></li>
                             <li onClick={handleMenuClick}><Link to="/verano">Outfits Verano</Link></li>
-                            <li onClick={handleMenuClick}><Link to="/primavera">Outfits EntreTiempo</Link></li>
                         </div>
                         <div className="navbar-nav ms-auto">
                             {user ? (
