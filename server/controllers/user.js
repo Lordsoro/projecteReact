@@ -6,9 +6,8 @@ async function profile(req, res) {
     try {
         const userId = req.params.userId;
         console.log("profile: ")
-        console.log(userId)
         const user = await User.findById(userId);
-
+        console.log(user)
         if (!user) {
             throw { msg: 'Usuario no encontrado' };
         }
@@ -33,7 +32,7 @@ async function deleteAccount(req, res) {
 }
 
 async function register(req, res) {
-    const { name, password, email, country = 'spain' } = req.body;
+    const { name, password, email, city, adress } = req.body;
     try {
         if (!name) {
             throw { msg: 'El nombre es obligatorio' };
@@ -51,11 +50,58 @@ async function register(req, res) {
             name,
             password: hash,
             email,
-            country,
+            city,
+            adress,
         });
         await newUser.save();
-        const user = { id: newUser._id, name, email, country };
+        const user = { id: newUser._id, name, email, city };
         res.json({ success: true, user });
+    } catch (error) {
+        res.status(500).send(error);
+    }
+
+}
+async function editUser(req, res) {
+    const { userId } = req.params;
+    const { name, password, email, city, adress } = req.body;
+    try {
+        if (!name) {
+            throw { msg: 'El nombre es obligatorio' };
+        }
+        if (!password) {
+            throw { msg: 'La contraseña es obligatoria' };
+        }
+
+        const existingUser = await User.findById(userId);
+        if (!existingUser) {
+            throw { msg: 'El usuario no existe' };
+        }
+
+        const foundUser = await User.findOne({ email });
+        if (foundUser && foundUser._id.toString() !== userId) {
+            throw { msg: 'El email ya está en uso' };
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+
+        existingUser.name = name;
+        existingUser.password = hash;
+        existingUser.email = email || existingUser.email;
+        existingUser.city = city || existingUser.city;
+        existingUser.adress = adress || existingUser.adress;
+
+        await existingUser.save();
+
+        const updatedUser = {
+            id: existingUser._id,
+            name: existingUser.name,
+            email: existingUser.email,
+            city: existingUser.city,
+            adress: existingUser.adress,
+        };
+
+        res.json({ success: true, user: updatedUser });
     } catch (error) {
         res.status(500).send(error);
     }
@@ -64,10 +110,11 @@ async function register(req, res) {
 
 
 async function login(req, res) {
+    console.log('recieved in login: ')
     console.log(req.body)
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
     try {
-        let user;
+        let user = req.session.currentUser;
         let isDemoUser = false;
         if (email === 'demo@demo.com' && password === '123') {
             user = await User.findOne({ email });
@@ -78,7 +125,8 @@ async function login(req, res) {
             const passwordSucces = await bcrypt.compare(password, user.password);
             if (!passwordSucces) throw { msg: 'Error en contraseña' };
         }
-        user.name = name;
+
+        console.log(req.session.currentUser);
         await user.save();
         res.json({
             success: true,
@@ -86,8 +134,7 @@ async function login(req, res) {
             id: user.id,
             name: user.name
         });
-        req.session.currentUser = user;
-        console.log(req.session.currentUser);
+
     } catch (error) {
         res.json({ success: false, error: 'Usuario o contraseña incorrectos' });
     }
@@ -99,7 +146,7 @@ async function login(req, res) {
 const demoUser = {
     name: 'Demo User',
     email: 'demo@demo.com',
-    country: 'Spain',
+    city: 'Spain',
 };
 
 async function init() {
@@ -125,5 +172,6 @@ module.exports = {
     register,
     login,
     profile,
-    deleteAccount
+    deleteAccount,
+    editUser
 };
