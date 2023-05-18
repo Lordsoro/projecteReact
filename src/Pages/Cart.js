@@ -6,12 +6,10 @@ import swal from 'sweetalert';
 export default function CartPage() {
     const { cart, setCart, setCartLength } = useContext(CartContext);
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('user-info'))
-
-
-   async function Confirmar() {
+    //const user = JSON.parse(localStorage.getItem('user-info'))
+    async function Confirmar() {
         try {
-            const user = JSON.parse(localStorage.getItem('user-info'))
+            const user = JSON.parse(localStorage.getItem('user-id'))
             if (!user) {
                 throw new Error('No se ha encontrado información de usuario.');
             }
@@ -20,7 +18,7 @@ export default function CartPage() {
                 const response = await fetch('http://localhost:8000/api/pedido', {
                     method: "POST",
                     body: JSON.stringify({
-                        user: user.id,
+                        user: user,
                         products: [item._id],
                         quantity: item.quantity,
                         size: item.size ? item.size : 'S',
