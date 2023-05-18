@@ -29,7 +29,6 @@ li a {
   height: 100%;
 }
 
-
 .navbar-nav li:hover a {
   background-color: black;
   display: block;
@@ -44,6 +43,11 @@ h4 {
 }
 
 
+.menu {
+  background-color: rgb(157, 195, 252);
+  color: black;
+  font-style: oblique;
+}
 
 .footer {
 
@@ -54,12 +58,6 @@ h4 {
   color: white;
   text-align: center;
 
-}
-
-.menu {
-  background-color: rgb(157, 195, 252);
-  color: black;
-  font-style: oblique;
 }
 
 input,
@@ -131,15 +129,15 @@ td {
   cursor: pointer;
 }
 
-.navBar {
-  margin: auto;
-}
-
 .card {
   margin-bottom: 10px;
   margin-top: 10px;
 }
 
+.navBar {
+  margin: auto;
+}
+
 .navbar-toggler-icon {
   color: white;
 }
@@ -147,6 +145,13 @@ td {
 .navbar-toggler-icon {
   color: white;
 }
+
+
+.custom-list-item {
+  width: 300px;
+  border-color: black;
+}
+
 
 /* 
 @media (max-width: 768px) {
