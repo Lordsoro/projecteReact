@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Footer() {
     return (
-        <div className="footer">
+        <div className="footer d-flex justify-content-center">
 
             <ul>
                 <li>Contacto:<p id='contact'>Email: blabla@gmail.com</p>
