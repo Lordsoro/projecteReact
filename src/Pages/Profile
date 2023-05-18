@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import swal from 'sweetalert';
@@ -10,19 +10,26 @@ export default function Profile() {
     const [email, setEmail] = useState('');
     const [country, setCountry] = useState('');
     const [editing, setEditing] = useState(false);
+    const [orders, setOrders] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const userId = JSON.parse(localStorage.getItem('user-id'));
-                console.log(userId)
                 const response = await fetch(`http://localhost:8000/api/profile/${userId}`);
                 const userData = await response.json();
-                setName(userData.name);
+                setName(userData.user.name);
                 setPassword(userData.password);
-                setEmail(userData.email);
-                setCountry(userData.country);
+                setEmail(userData.user.email);
+                setCountry(userData.user.country);
+
+
+                const ordersResponse = await fetch(`http://localhost:8000/api/orders/${userId}`);
+                const ordersData = await ordersResponse.json();
+                setOrders(ordersData.orders);
+                console.log('User orders: ');
+                console.log(ordersData);
             } catch (error) {
                 console.log(error);
             }
@@ -31,6 +38,7 @@ export default function Profile() {
         fetchUserData()
             .then(() => {
                 console.log("Profile Name: " + name);
+
             });
     }, []);
 
@@ -39,7 +47,7 @@ export default function Profile() {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        const baseUrl = 'http://localhost:8000/api/register';
+        const baseUrl = 'http://localhost:8000/api/profileEdit';
 
         try {
             const response = await fetch(baseUrl, {
@@ -79,12 +87,33 @@ export default function Profile() {
         }
 
     }
+    async function handleDeleteAccount() {
+        try {
+            const userId = JSON.parse(localStorage.getItem('user-id'));
+            console.log('Delete id: ')
+            console.log(userId)
+            const response = await fetch(`http://localhost:8000/api/profile/${userId}`, {
+                method: 'DELETE'
+            });
+            const jsonData = await response.json();
+            if (jsonData.success === true) {
+                localStorage.removeItem('user-info');
+                localStorage.removeItem('user-id');
+                navigate('/');
+            } else {
+                swal('Error al eliminar la cuenta');
+            }
+        } catch (error) {
+            console.log(error);
+            swal('Error al eliminar la cuenta');
+        }
+    }
 
     return (
         <div className="container rounded bg-white mt-5 mb-5">
             <div>
                 <h1>Perfil</h1>
-                {editing ? ( // Mostrar el formulario si se está editando
+                {editing ? (
                     <form action="/profile" method="post" className="col-sm-6 offset-sm-3">
                         <div>
                             <Input
@@ -156,14 +185,18 @@ export default function Profile() {
                         <div className="d-inline-block text-left">
                             <ul className="list-group">
                                 <li className="list-group-item custom-list-item">Pedidos realizados: </li>
-                                <li className="list-group-item custom-list-item">Campo 1</li>
+                                {orders.map((order) => (
+                                    <li className="list-group-item custom-list-item" key={order.id}>
+                                        {order.details}
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                         <div className="mt-4">
                             <Button onClick={handleEditClick}>Editar Perfil</Button>
                         </div>
                         <div className="mt-4">
-                            <button className="btn btn-danger">Borrar cuenta</button>
+                            <button className="btn btn-danger" onClick={handleDeleteAccount}>Borrar cuenta</button>
                         </div>
                     </div>
 
