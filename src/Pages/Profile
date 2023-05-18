@@ -8,7 +8,7 @@ export default function Profile() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [country, setCountry] = useState('');
+    const [city, setcity] = useState('');
     const [editing, setEditing] = useState(false);
     const [orders, setOrders] = useState([]);
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function Profile() {
                 setName(userData.user.name);
                 setPassword(userData.password);
                 setEmail(userData.user.email);
-                setCountry(userData.user.country);
+                setcity(userData.user.city);
 
 
                 const ordersResponse = await fetch(`http://localhost:8000/api/orders/${userId}`);
@@ -43,20 +43,19 @@ export default function Profile() {
     }, []);
 
 
-
-
     async function handleSubmit(event) {
         event.preventDefault();
-        const baseUrl = 'http://localhost:8000/api/profileEdit';
+        const userId = JSON.parse(localStorage.getItem('user-id'));
+        const baseUrl = `http://localhost:8000/api/editUser/${userId}`;
 
         try {
             const response = await fetch(baseUrl, {
-                method: 'POST',
+                method: 'PUT',
                 body: JSON.stringify({
                     name: name,
                     email: email,
                     password: password,
-                    country: country
+                    city: city
                 }),
                 headers: {
                     'Accept': 'application/json',
@@ -67,17 +66,15 @@ export default function Profile() {
             if (jsonData.success === true) {
                 localStorage.setItem('user-info', JSON.stringify(jsonData.user));
                 navigate('/');
-            } else {
-                swal('error email ya registrado');
             }
         } catch (error) {
             console.log(error);
-            swal('correo ya esta en uso');
+            swal('error al editar');
         }
     }
-    function handleCountry(country) {
-        console.log(country)
-        setCountry(country)
+    function handlecity(city) {
+        console.log(city)
+        setcity(city)
     }
     function handleEditClick() {
         if (editing === true) {
@@ -151,9 +148,9 @@ export default function Profile() {
                             />
                         </div>
                         <div>
-                            <select id="country" name="country" defaultValue="spain" onChange={(e) => handleCountry(e.target.value)}>
+                            <select id="city" name="city" defaultValue="spain" onChange={(e) => handlecity(e.target.value)}>
 
-                                <option value="spain" selected>España</option>
+                                <option value="spain">España</option>
                                 <option value="uk">Reino Unido</option>
                                 <option value="italia">Italia</option>
                                 <option value="francia">Francia</option>
@@ -161,11 +158,11 @@ export default function Profile() {
                             </select>
 
                         </div>
-                        <div style={{ marginTop: '1rem' }}>
-                            <Button onClick={handleSubmit}>Guardar</Button>
+                        <div>
+                            <Button className='m-2' onClick={handleSubmit}>Guardar</Button>
                             <Button onClick={handleEditClick}>Cancelar</Button>
                         </div>
-                        <div style={{ marginTop: '1rem' }}>
+                        <div>
                             <button type="button" className="btn btn-danger">Borrar cuenta</button>
                         </div>
                     </form>
@@ -174,12 +171,12 @@ export default function Profile() {
                     <div className="text-center">
                         <div className="d-inline-block text-left">
                             <ul className="list-group">
-                                <li className="list-group-item custom-list-item">Nombre: </li>
-                                <li className="list-group-item custom-list-item">{name}</li>
-                                <li className="list-group-item custom-list-item">Email: </li>
-                                <li className="list-group-item custom-list-item">{email}</li>
-                                <li className="list-group-item custom-list-item">País: </li>
-                                <li className="list-group-item custom-list-item">{country}</li>
+                                <li className="bg-secondary list-group-item custom-list-item">Nombre:</li>
+                                <li className="list-group-item custom-list-item" >{name}</li>
+                                <li className="bg-secondary list-group-item custom-list-item">Email:</li>
+                                <li className="list-group-item custom-list-item" >{email}</li>
+                                <li className="bg-secondary list-group-item custom-list-item">País:</li>
+                                <li className="list-group-item custom-list-item">{city}</li>
                             </ul>
                         </div>
                         <div className="d-inline-block text-left">
