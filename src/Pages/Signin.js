@@ -53,7 +53,10 @@ export default function Signup() {
             });
             const jsonData = await response.json();
             if (jsonData.success === true) {
+                console.log('Sign: ')
+                console.log(jsonData.user.id)
                 localStorage.setItem("user-info", JSON.stringify(jsonData.user));
+                localStorage.setItem('user-id', JSON.stringify(jsonData.user.id));
                 navigate('/');
             } else {
                 swal('error email ya registrado');
@@ -105,9 +108,9 @@ export default function Signup() {
                         handleChange={handleEmail} />
                 </div>
                 <div>
-                    <select id="country" name="country" defaultValue="spain" onChange={(e) => handleCountry(e.target.value)}>
+                    <select id="country" name="country" defaultValue={"spain"} onChange={(e) => handleCountry(e.target.value)}>
 
-                        <option value="spain" selected>España</option>
+                        <option value="spain" >España</option>
                         <option value="uk">Reino Unido</option>
                         <option value="italia">Italia</option>
                         <option value="francia">Francia</option>
