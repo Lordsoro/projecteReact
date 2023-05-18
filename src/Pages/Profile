@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useId } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import swal from 'sweetalert';
@@ -9,9 +9,24 @@ export default function Profile() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [city, setcity] = useState('');
+    const [adress, setAdress] = useState('');
     const [editing, setEditing] = useState(false);
     const [orders, setOrders] = useState([]);
     const navigate = useNavigate();
+
+    function handleName(name, value) {
+        setName(value)
+    }
+    function handleEmail(name, value) {
+        setEmail(value)
+    }
+    function handleAdress(value) {
+        console.log(value)
+        setAdress(value)
+    }
+    function handlePass(name, value) {
+        setPassword(value)
+    }
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -23,7 +38,7 @@ export default function Profile() {
                 setPassword(userData.password);
                 setEmail(userData.user.email);
                 setcity(userData.user.city);
-
+                setAdress(userData.user.adress)
 
                 const ordersResponse = await fetch(`http://localhost:8000/api/orders/${userId}`);
                 const ordersData = await ordersResponse.json();
@@ -47,7 +62,6 @@ export default function Profile() {
         event.preventDefault();
         const userId = JSON.parse(localStorage.getItem('user-id'));
         const baseUrl = `http://localhost:8000/api/editUser/${userId}`;
-
         try {
             const response = await fetch(baseUrl, {
                 method: 'PUT',
@@ -55,7 +69,8 @@ export default function Profile() {
                     name: name,
                     email: email,
                     password: password,
-                    city: city
+                    city: city,
+                    adress: adress
                 }),
                 headers: {
                     'Accept': 'application/json',
@@ -72,7 +87,7 @@ export default function Profile() {
             swal('error al editar');
         }
     }
-    function handlecity(city) {
+    function handleCity(city) {
         console.log(city)
         setcity(city)
     }
@@ -121,7 +136,7 @@ export default function Profile() {
                                     type: 'text',
 
                                 }}
-                            //handleChange={handleName} 
+                                handleChange={handleName}
                             />
                         </div>
                         <div>
@@ -133,7 +148,7 @@ export default function Profile() {
                                     placeholder: 'contraseña'
 
                                 }}
-                            //handleChange={handlePass} 
+                                handleChange={handlePass}
                             />
                         </div>
                         <div>
@@ -144,19 +159,28 @@ export default function Profile() {
                                     type: 'email',
                                     placeholder: 'correo'
                                 }}
-                            //handleChange={handleEmail}
+                                handleChange={handleEmail}
                             />
                         </div>
                         <div>
-                            <select id="city" name="city" defaultValue="spain" onChange={(e) => handlecity(e.target.value)}>
-
-                                <option value="spain">España</option>
-                                <option value="uk">Reino Unido</option>
-                                <option value="italia">Italia</option>
-                                <option value="francia">Francia</option>
-
-                            </select>
-
+                            <Input
+                                attribute={{
+                                    id: 'city',
+                                    name: 'city',
+                                    type: 'text',
+                                    placeholder: 'ciudad'
+                                }}
+                                handleChange={handleCity} />
+                        </div>
+                        <div>
+                            <Input
+                                attribute={{
+                                    id: 'adress',
+                                    name: 'adress',
+                                    type: 'adress',
+                                    placeholder: 'Calle Nº '
+                                }}
+                                handleChange={handleAdress} />
                         </div>
                         <div>
                             <Button className='m-2' onClick={handleSubmit}>Guardar</Button>
