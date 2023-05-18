@@ -39,17 +39,6 @@ export default function Index() {
                     <Button variant="outline-primary">Comprar</Button>
                 </Card.Body>
             </Card>
-            <br />
-            <Card>
-                <Card.Img variant="top" />
-                <Card.Body>
-                    <Card.Text>
-                        Completa tu look con nuestros accesorios
-                    </Card.Text>
-                    <Button>Comprar</Button>
-                </Card.Body>
-            </Card>
-            <br />
         </div>
     )
 }
