@@ -3,6 +3,10 @@ const schema = mongoose.Schema;
 
 // Definición del esquema de nuestra colección
 let userSchema = new schema({
+    id: {
+        type: schema.Types.ObjectId,
+        required: false
+    },
     name: {
         type: String,
         required: false,
