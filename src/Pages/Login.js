@@ -35,8 +35,10 @@ export default function Login() {
 
             const jsonData = await response.json();
             if (jsonData.success === true) {
-                console.log(jsonData)
+                console.log("Login: ")
+                console.log(jsonData.user._id)
                 localStorage.setItem("user-info", JSON.stringify(jsonData));
+                localStorage.setItem('user-id', JSON.stringify(jsonData.user._id));
                 navigate('/');
             } else {
                 swal({ icon: "warning", text: 'email o contraseña incorrectos' });
