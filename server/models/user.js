@@ -21,7 +21,11 @@ let userSchema = new schema({
         type: String,
         required: false
     },
-    country: {
+    city: {
+        type: String,
+        required: false
+    },
+    adress: {
         type: String,
         required: false
     }
