@@ -2,6 +2,24 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
+async function profile(req, res) {
+    try {
+        const userId = req.session.currentUser;
+        console.log("profile: ")
+        console.log(userId)
+        const user = await User.findById(userId);
+
+        if (!user) {
+            throw { msg: 'Usuario no encontrado' };
+        }
+
+        res.json({ success: true, user });
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
+
 async function register(req, res) {
     const { name, password, email, country = 'spain' } = req.body;
     try {
