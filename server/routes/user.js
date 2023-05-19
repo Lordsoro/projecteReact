@@ -6,8 +6,8 @@ const api = express.Router();
 
 api.get('/profile/:userId', userController.profile);
 api.delete('/profile/:userId', userController.deleteAccount);
+api.put('/profile/:userId', userController.editUser);
 api.post('/register', userController.register);
-api.put('/editUser', userController.editUser);
 api.post('/login', userController.login);
 
 module.exports = api;
