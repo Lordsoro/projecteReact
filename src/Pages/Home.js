@@ -3,7 +3,6 @@ import Footer from '../components/Footer'
 import { Route, Routes } from 'react-router-dom';
 import Invierno from './Invierno';
 import Verano from './Verano';
-import DetallesInf from '../components/DetallesInf';
 import Navbar from '../components/Navbar';
 import Profile from './Profile';
 import Login from './Login';
@@ -28,7 +27,8 @@ export default function Home() {
                     <Route path='/cart' element={<Cart />} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Signin />} />
-                    <Route path= '/profile' element={<Profile />} />  
+                    <Route path='/profile' element={<Profile />} />
+
                 </Routes>
                 <Footer />
             </CartContextProvider>
