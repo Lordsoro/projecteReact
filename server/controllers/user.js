@@ -7,7 +7,7 @@ async function profile(req, res) {
         const userId = req.params.userId;
         console.log("profile: ")
         const user = await User.findById(userId);
-        console.log(user)
+        console.log(user.name)
         if (!user) {
             throw { msg: 'Usuario no encontrado' };
         }
@@ -62,8 +62,10 @@ async function register(req, res) {
 
 }
 async function editUser(req, res) {
+    console.log("Edit profile: ")
+    console.log(req.params)
     const { userId } = req.params;
-    const { name, password, email, city, adress } = req.body;
+    const { name, password, email, city, address } = req.body;
     try {
         if (!name) {
             throw { msg: 'El nombre es obligatorio' };
@@ -87,9 +89,15 @@ async function editUser(req, res) {
 
         existingUser.name = name;
         existingUser.password = hash;
-        existingUser.email = email || existingUser.email;
-        existingUser.city = city || existingUser.city;
-        existingUser.adress = adress || existingUser.adress;
+        if (email) {
+            existingUser.email = email;
+        }
+        if (city) {
+            existingUser.city = city;
+        }
+        if (address) {
+            existingUser.address = address;
+        }
 
         await existingUser.save();
 
@@ -98,15 +106,15 @@ async function editUser(req, res) {
             name: existingUser.name,
             email: existingUser.email,
             city: existingUser.city,
-            adress: existingUser.adress,
+            address: existingUser.address,
         };
 
         res.json({ success: true, user: updatedUser });
     } catch (error) {
         res.status(500).send(error);
     }
-
 }
+
 
 
 async function login(req, res) {
