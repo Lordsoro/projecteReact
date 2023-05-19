@@ -9,5 +9,6 @@ api.delete('/profile/:userId', userController.deleteAccount);
 api.put('/profile/:userId', userController.editUser);
 api.post('/register', userController.register);
 api.post('/login', userController.login);
+api.get('/orders/:userId', userController.order);
 
 module.exports = api;
