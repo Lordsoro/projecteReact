@@ -62,8 +62,6 @@ async function register(req, res) {
 
 }
 async function editUser(req, res) {
-    console.log("Edit profile: ")
-    console.log(req.params)
     const { userId } = req.params;
     const { name, password, email, city, address } = req.body;
     try {
