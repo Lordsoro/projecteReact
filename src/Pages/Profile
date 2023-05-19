@@ -61,8 +61,12 @@ export default function Profile() {
     async function handleSubmit(event) {
         event.preventDefault();
         const userId = JSON.parse(localStorage.getItem('user-id'));
-        const baseUrl = `http://localhost:8000/api/editUser/${userId}`;
+        const baseUrl = `http://localhost:8000/api/profile/${userId}`;
         try {
+            if (!password) {
+                swal('Por favor, introduce una contraseña');
+                return;
+            }
             const response = await fetch(baseUrl, {
                 method: 'PUT',
                 body: JSON.stringify({
@@ -127,6 +131,7 @@ export default function Profile() {
                 <h1>Perfil</h1>
                 {editing ? (
                     <form action="/profile" method="post" className="col-sm-6 offset-sm-3">
+                        <p>Introduzca la contraseña para guardar los cambios</p>
                         <div>
                             <Input
                                 attribute={{
