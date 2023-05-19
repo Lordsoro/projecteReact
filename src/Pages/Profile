@@ -209,14 +209,20 @@ export default function Profile() {
                             </ul>
                         </div>
                         <div className="d-inline-block text-left">
-                            <ul className="list-group">
-                                <li className="list-group-item custom-list-item">Pedidos realizados: </li>
-                                {orders.map((order) => (
-                                    <li className="list-group-item custom-list-item" key={order.id}>
-                                        {order.details}
-                                    </li>
-                                ))}
-                            </ul>
+                            {orders && orders.length > 0 ? (
+                                <ul className="list-group">
+                                    <li className="list-group-item custom-list-item">Pedidos realizados: </li>
+                                    {orders.map((order) => (
+                                        <li className="list-group-item custom-list-item" key={order.id}>
+                                            {order.details}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <ul className="list-group">
+                                    <li className="bg-secondary list-group-item custom-list-item">No se han realizado pedidos</li>
+                                </ul>
+                            )}
                         </div>
                         <div className="mt-4">
                             <Button onClick={handleEditClick}>Editar Perfil</Button>
