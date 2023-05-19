@@ -1,13 +1,12 @@
 /* eslint-disable no-throw-literal */
 const User = require('../models/user');
+const { Pedido } = require('../models/pedido');
 const bcrypt = require('bcrypt');
 
 async function profile(req, res) {
     try {
         const userId = req.params.userId;
-        console.log("profile: ")
         const user = await User.findById(userId);
-        console.log(user.name)
         if (!user) {
             throw { msg: 'Usuario no encontrado' };
         }
@@ -17,7 +16,17 @@ async function profile(req, res) {
         res.status(500).send(error);
     }
 }
+async function order(req, res) {
+    try {
+        const userId = req.params.userId;
+        const pedidos = await Pedido.find({ userId: userId });
 
+        res.json({ pedidos });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error al obtener los pedidos del usuario' });
+    }
+}
 async function deleteAccount(req, res) {
     const userId = req.params.userId;
 
@@ -179,5 +188,6 @@ module.exports = {
     login,
     profile,
     deleteAccount,
-    editUser
+    editUser,
+    order
 };
