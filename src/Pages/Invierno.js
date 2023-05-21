@@ -33,13 +33,14 @@ export default function Verano() {
             return;
         }
 
-        const existingItem = cart.find(i => i.id === item.id);
+   const existingItem = cart.find(i => i._id === item._id);
         if (existingItem) {
-            setCart(cart.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i));
+            setCart(cart.map(i => i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i));
 
         } else {
             setCart([...cart, { ...item, quantity: 1 }]);
         }
+
 
 
     };
