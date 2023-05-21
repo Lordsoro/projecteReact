@@ -19,9 +19,11 @@ async function profile(req, res) {
 async function order(req, res) {
     try {
         const userId = req.params.userId;
-        const pedidos = await Pedido.find({ userId: userId });
+        const pedidos = await Pedido.find({ user: userId });
 
         res.json({ pedidos });
+        console.log('Pedidos: ')
+        console.log(pedidos)
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Error al obtener los pedidos del usuario' });
